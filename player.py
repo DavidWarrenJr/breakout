@@ -10,7 +10,8 @@ class Player(pygame.sprite.Sprite):
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
 
-        self.rect.center = (WIDTH / 2, HEIGHT / 2)
+        self.rect.centerx = WIDTH / 2
+        self.rect.y = HEIGHT / 2 + 100
 
     def update(self):
         self.move()
