@@ -34,7 +34,7 @@ class Ball(pygame.sprite.Sprite):
 
     def handle_collision(self, player, wall):
         # COLLISION WITH PLAYER
-        if self.rect.colliderect(player):
+        if self.rect.colliderect(player) and self.y_speed > 0:
             self.y_speed *= -1
 
             # moving right
