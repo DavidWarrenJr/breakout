@@ -1,5 +1,6 @@
 import pygame
 import sys
+import time
 from pygame.locals import *
 from globals import *
 from player import Player
@@ -43,8 +44,11 @@ def create_wall():
 
 create_wall()
 
-
-while True:
+WIN = pygame.USEREVENT + 1
+won = False
+LOSE = pygame.USEREVENT + 0
+running = True
+while running:
     frames_per_second.tick(FPS)
 
     # input / events
@@ -52,6 +56,11 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == LOSE:
+            running = False
+        if event.type == WIN:
+            won = True
+            running = False
 
     # UPDATE
     player.update()
@@ -59,6 +68,14 @@ while True:
 
     # DRAW
     screen.fill(WHITE)  # CLEAR SCREEN
-    all_sprites.draw(screen)
+    if running:
+        all_sprites.draw(screen)
+    else:
+        if not won:
+            screen.fill(RED)
+        else:
+            screen.fill(GREEN)
+        pygame.display.update()
+        time.sleep(2)
 
     pygame.display.update()

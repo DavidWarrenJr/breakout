@@ -21,6 +21,11 @@ class Ball(pygame.sprite.Sprite):
         self.block_hit_count = 0
 
     def update(self, player, wall):
+        if len(wall) == 0:
+            win = pygame.USEREVENT + 1
+            win_event = pygame.event.Event(win)
+            pygame.event.post(win_event)
+
         # MOVE
         self.rect.y += self.y_speed
         self.rect.x += self.x_speed
@@ -57,13 +62,17 @@ class Ball(pygame.sprite.Sprite):
                 block.kill()
                 self.block_hit_count += 1
 
-
         # COLLISION WITH SCREEN EDGE
         if self.rect.right > WIDTH or self.rect.left < 0:
             self.x_speed *= -1
 
         if self.rect.top < 0:
             self.y_speed *= -1
+
+        if self.rect.bottom > HEIGHT:
+            lose = pygame.USEREVENT + 0
+            loss_event = pygame.event.Event(lose)
+            pygame.event.post(loss_event)
 
         if self.block_hit_count > 6:
             if self.y_speed > 0:
