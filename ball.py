@@ -1,5 +1,5 @@
 import pygame.sprite
-
+from pygame.math import Vector2
 from globals import *
 
 
@@ -13,34 +13,51 @@ class Ball(pygame.sprite.Sprite):
 
         # starting position
         self.rect.x = WIDTH / 2
-        self.rect.y = 25
+        self.rect.y = HEIGHT / 2
 
         self.velocity = 1
-        self.y_speed = 1 * self.velocity
-        self.x_speed = 1 * self.velocity
+        self.y_speed = 5
+        self.x_speed = 2
+        self.block_hit_count = 0
 
     def update(self, player, wall):
+        # MOVE
         self.rect.y += self.y_speed
         self.rect.x += self.x_speed
 
-        # if collision with player
+        self.handle_collision(player, wall)
+
+    def handle_collision(self, player, wall):
+        # COLLISION WITH PLAYER
         if self.rect.colliderect(player):
             self.y_speed *= -1
 
-        # if collision with block
+            # moving right
+            if self.x_speed > 0:
+                # if ball lands on left side of paddle reverse x direction
+                if self.rect.center[0] < player.rect.center[0]:
+                    self.x_speed *= -1
+            else:  # moving left
+                # if ball lands on right side of paddle reverse x direction
+                if self.rect.center[0] > player.rect.center[0]:
+                    self.x_speed *= -1
+
+        # COLLISION WITH BLOCK
         for block in wall:
-            # top / bottom collisions
+            # TOP / BOTTOM
             if block.rect.collidepoint(self.rect.midtop) or block.rect.collidepoint(self.rect.midbottom):
                 self.y_speed *= -1
                 block.kill()
 
-            # left / right collision
+
+            # LEFT / RIGHT
             if block.rect.collidepoint(self.rect.midleft) or \
                     block.rect.collidepoint(self.rect.midright):
                 self.x_speed *= -1
                 block.kill()
 
-        # if collision with edge of screen
+
+        # COLLISION WITH SCREEN EDGE
         if self.rect.right > WIDTH or self.rect.left < 0:
             self.x_speed *= -1
 

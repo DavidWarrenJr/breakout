@@ -7,6 +7,7 @@ from block import Block
 from ball import Ball
 
 # TODO create blocks with random length
+# TODO learn trigonometry for ball physics
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -41,6 +42,7 @@ def create_wall():
 
 
 create_wall()
+
 
 while True:
     frames_per_second.tick(FPS)
