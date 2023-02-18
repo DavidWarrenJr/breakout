@@ -16,7 +16,7 @@ class Ball(pygame.sprite.Sprite):
         self.rect.y = HEIGHT / 2
 
         self.velocity = 1
-        self.y_speed = 5
+        self.y_speed = 2
         self.x_speed = 2
         self.block_hit_count = 0
 
@@ -48,13 +48,14 @@ class Ball(pygame.sprite.Sprite):
             if block.rect.collidepoint(self.rect.midtop) or block.rect.collidepoint(self.rect.midbottom):
                 self.y_speed *= -1
                 block.kill()
-
+                self.block_hit_count += 1
 
             # LEFT / RIGHT
             if block.rect.collidepoint(self.rect.midleft) or \
                     block.rect.collidepoint(self.rect.midright):
                 self.x_speed *= -1
                 block.kill()
+                self.block_hit_count += 1
 
 
         # COLLISION WITH SCREEN EDGE
@@ -63,3 +64,10 @@ class Ball(pygame.sprite.Sprite):
 
         if self.rect.top < 0:
             self.y_speed *= -1
+
+        if self.block_hit_count > 6:
+            if self.y_speed > 0:
+                self.y_speed += 1
+            else:
+                self.y_speed -= 1
+            self.block_hit_count = 0
