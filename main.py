@@ -4,8 +4,9 @@ from pygame.locals import *
 from globals import *
 from player import Player
 from block import Block
+from ball import Ball
 
-# TODO create ball
+# TODO create blocks with random length
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -13,8 +14,14 @@ screen.fill(WHITE)
 frames_per_second = pygame.time.Clock()
 
 all_sprites = pygame.sprite.Group()
+
 player = Player()
 all_sprites.add(player)
+
+ball = Ball()
+all_sprites.add(ball)
+
+wall = pygame.sprite.Group()
 
 
 def create_wall():
@@ -27,6 +34,7 @@ def create_wall():
             block_start = block.rect.right + 5
 
             all_sprites.add(block)
+            wall.add(block)
 
         row_height += block.rect.height + 5
         block_start = -10
@@ -44,7 +52,8 @@ while True:
             sys.exit()
 
     # UPDATE
-    all_sprites.update()
+    player.update()
+    ball.update(player, wall)
 
     # DRAW
     screen.fill(WHITE)  # CLEAR SCREEN
