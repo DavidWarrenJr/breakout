@@ -12,6 +12,7 @@ from ball import Ball
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Breakout")
 screen.fill(WHITE)
 frames_per_second = pygame.time.Clock()
 
